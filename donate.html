@@ -24,7 +24,7 @@
             <span class="hero__corner hero__corner--br" aria-hidden="true"></span>
             <img class="hero__avatar" src="https://github.com/mrrabyss.png?size=200" width="120" height="120" alt="mrrabyss">
         </div>
-        <h1 class="hero__title">mrrabyss</h1>
+        <a href="https://mrrabyss.github.io"><h1 class="hero__title">mrrabyss</h1></a>
         <p class="hero__tagline">a programmer</p>
         <a class="guns-link" href="https://guns.lol/mrrabyss" target="_blank" rel="noopener noreferrer me" aria-label="mrrabyss on guns.lol — open bio page">
             <span class="guns-link__line">
@@ -33,7 +33,53 @@
             <span class="guns-link__hint" aria-hidden="true">open bio page</span>
         </a>
     </header>
-        
+    <main>
+        <section class="section section--donate" aria-labelledby="donate-heading">
+            <div class="section__head">
+                <h2 id="donate-heading" class="section__title">Donate</h2>
+                <p class="section__rule" aria-hidden="true"></p>
+            </div>
+
+            <p class="stats__note">Support my work by sending crypto. Click a button to copy the address.</p>
+
+            <div class="donate__list">
+                <div class="wallet-card">
+                    <div class="wallet-meta">
+                        <span class="wallet-name">Bitcoin (BTC)</span>
+                        <button class="copy-btn" data-address="bc1q5g00wjkugww7umac03r325658w9gryqt4an3tl" aria-label="Copy Bitcoin address">Copy</button>
+                    </div>
+                    <div class="wallet-address">bc1q5g00wjkugww7umac03r325658w9gryqt4an3tl</div>
+                    <div class="copy-status" aria-hidden="true"></div>
+                </div>
+
+                <div class="wallet-card">
+                    <div class="wallet-meta">
+                        <span class="wallet-name">Ethereum (ETH)</span>
+                        <button class="copy-btn" data-address="0x4D8FB5149aEEec7F92E17Bc0e2fCE1EF8610f75F" aria-label="Copy Ethereum address">Copy</button>
+                    </div>
+                    <div class="wallet-address">0x4D8FB5149aEEec7F92E17Bc0e2fCE1EF8610f75F</div>
+                    <div class="copy-status" aria-hidden="true"></div>
+                </div>
+
+                <div class="wallet-card">
+                    <div class="wallet-meta">
+                        <span class="wallet-name">Solana (SOL)</span>
+                        <button class="copy-btn" data-address="BdmsRYGQTRb6n8RswwnGYUF2RvvMeEKGATBCeHRX5tGH" aria-label="Copy Solana address">Copy</button>
+                    </div>
+                    <div class="wallet-address">BdmsRYGQTRb6n8RswwnGYUF2RvvMeEKGATBCeHRX5tGH</div>
+                    <div class="copy-status" aria-hidden="true"></div>
+                </div>
+                <div class="wallet-card">
+                    <div class="wallet-meta">
+                        <span class="wallet-name">TON</span>
+                        <button class="copy-btn" data-address="UQCD_JD7RXcTesPM7MiwFleDqjhrYYQQdzQ2vaNgc6fI2yoH" aria-label="Copy TON address">Copy</button>
+                    </div>
+                    <div class="wallet-address">UQCD_JD7RXcTesPM7MiwFleDqjhrYYQQdzQ2vaNgc6fI2yoH</div>
+                    <div class="copy-status" aria-hidden="true"></div>
+                </div>
+            </div>
+        </section>
+    </main>
     <footer class="footer">
         <p class="footer__text">© <span id="year"></span> mrrabyss</p>
     </footer>
@@ -41,5 +87,41 @@
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script defer src="main.js"></script>
+    <script>
+    (function(){
+        function showStatus(el, msg){
+            if(!el) return;
+            el.textContent = msg;
+            el.style.transition = 'opacity 220ms ease';
+            el.style.opacity = '1';
+            setTimeout(function(){ el.style.opacity = '0'; }, 1600);
+        }
+
+        document.querySelectorAll('.copy-btn').forEach(function(btn){
+            btn.addEventListener('click', function(){
+                var address = btn.getAttribute('data-address') || '';
+                if(!address) return;
+                if(navigator.clipboard && navigator.clipboard.writeText){
+                    navigator.clipboard.writeText(address).then(function(){
+                        var status = btn.closest('.wallet-card').querySelector('.copy-status');
+                        showStatus(status, 'Copied!');
+                    }, function(){
+                        showStatus(btn.closest('.wallet-card').querySelector('.copy-status'), 'Copy failed');
+                    });
+                } else {
+                    var ta = document.createElement('textarea');
+                    ta.value = address;
+                    ta.style.position = 'fixed';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { document.execCommand('copy'); showStatus(btn.closest('.wallet-card').querySelector('.copy-status'), 'Copied!'); }
+                    catch(e){ showStatus(btn.closest('.wallet-card').querySelector('.copy-status'), 'Copy failed'); }
+                    ta.remove();
+                }
+            });
+        });
+    })();
+    </script>
 </body>
 </html>
