@@ -1,5 +1,20 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
+function initWarningPopup() {
+    const popup = document.getElementById("warningPopup");
+    const closeButton = popup?.querySelector(".warning-popup__close");
+
+    if (!popup) {
+        return;
+    }
+
+    popup.classList.add("is-visible");
+
+    closeButton?.addEventListener("click", () => {
+        popup.classList.remove("is-visible");
+    });
+}
+
 function initAnimations() {
     if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
         return;
@@ -84,7 +99,11 @@ function initAnimations() {
 }
 
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initAnimations);
+    document.addEventListener("DOMContentLoaded", () => {
+        initWarningPopup();
+        initAnimations();
+    });
 } else {
+    initWarningPopup();
     initAnimations();
 }
